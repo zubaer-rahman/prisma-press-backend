@@ -21,6 +21,6 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
-app.post("/api/users", userRoute);
+app.use("/api/users", userRoute);
 
 export default app;

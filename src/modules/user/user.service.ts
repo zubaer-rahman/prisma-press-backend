@@ -26,7 +26,7 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
   await prisma.profile.create({
     data: {
       userId: createdUser.id,
-      profilePhoto
+      profilePhoto: profilePhoto ?? null
     },
   });
 
