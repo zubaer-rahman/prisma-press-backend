@@ -3,7 +3,7 @@ import type { Application, Request, Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import config from "./config";
-import { prisma } from "./lib/prisma";
+import {userRoute} from "../src/modules/user/user.route"
 
 const app: Application = express();
 
@@ -20,5 +20,7 @@ app.use(cookieParser());
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
+
+app.post("/api/users", userRoute);
 
 export default app;
