@@ -3,8 +3,8 @@ import type { Application, Request, Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import config from "./config";
-import {userRoute} from "../src/modules/user/user.route"
-
+import { userRoutes } from "./modules/user/user.routes";
+import { authRoutes } from "./modules/auth/auth.routes";
 const app: Application = express();
 
 app.use(
@@ -21,6 +21,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
-app.use("/api/users", userRoute);
+app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
 
 export default app;

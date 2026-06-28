@@ -1,32 +1,47 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import httpStatus from "http-status";
 import { userService } from "./user.service";
-
-const registerUser = async (req: Request, res: Response) => {
-  try {
+import catchAsync from "../../utils/catchAsync";
+import { sendResponse } from "../../utils/sendResponse";
+import { jwtUtils } from "../../utils/jwt";
+import config from "../../config";
+const registerUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
-    console.log({payload})
+    console.log({ payload });
     const user = await userService.registerUserIntoDB(payload);
 
-    res.status(httpStatus.CREATED).json({
+    sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
       message: "User registered successfully!",
       data: {
-        user
-      }
+        user,
+      },
     });
-  } catch (error) {
-    console.log(error);
-    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      statusCode: httpStatus.INTERNAL_SERVER_ERROR,
-      message: "Failed to register user",
-      error: (error as Error).message
-    });
+  },
+);
+const getMyProfile = catchAsync(async (req: Request, res: Response) => {
+  const { accessToken } = req.cookies;
+
+  const verifiedToken = jwtUtils.verifyToken(
+    accessToken,
+    config.jwt_acess_secret,
+  );
+  if (typeof verifiedToken === "string") {
+    throw new Error(verifiedToken);
   }
-};
+  const profile = await userService.getMyProfileFromDB(verifiedToken.id);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User Profile fetched successfully",
+    data: { profile },
+  });
+});
 
 export const userController = {
   registerUser,
+  getMyProfile,
 };
