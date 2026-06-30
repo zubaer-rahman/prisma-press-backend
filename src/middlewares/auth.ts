@@ -27,7 +27,7 @@ export const auth = (...requiredRoles: Role[]) => {
       : req.headers.authorization?.startsWith("Bearer ")
         ? req.headers.authorization.split(" ")[1]
         : req.headers.authorization;
-    console.log(token)
+    console.log({token})
     if (!token) {
       throw new Error(
         "You are not logged in. Please login to access this resource.",
