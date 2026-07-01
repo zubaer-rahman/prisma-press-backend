@@ -19,3 +19,9 @@ enum PostStatus {
   PUBLISHED
   ARCHIVED
 }
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  EXPIRED
+}

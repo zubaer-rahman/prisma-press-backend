@@ -7,8 +7,7 @@ import { sendResponse } from "../../utils/sendResponse";
 const registerUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
-    console.log({ payload });
-    const user = await userService.registerUserIntoDB(payload);
+     const user = await userService.registerUserIntoDB(payload);
 
     sendResponse(res, {
       success: true,
