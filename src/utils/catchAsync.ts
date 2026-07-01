@@ -1,4 +1,3 @@
-import httpStatus from "http-status";
 import { Request, Response, RequestHandler, NextFunction } from "express";
 
 const catchAsync = (fn: RequestHandler) => {
@@ -6,14 +5,7 @@ const catchAsync = (fn: RequestHandler) => {
     try {
       await fn(req, res, next);
     } catch (error) {
-      console.log(error);
-
-      res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-        success: false,
-        statusCode: httpStatus.INTERNAL_SERVER_ERROR,
-        message: "Internal Server Error!",
-        error: (error as Error).message,
-      });
+      next(error);
     }
   };
 };
